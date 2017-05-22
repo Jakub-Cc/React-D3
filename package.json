@@ -1,0 +1,31 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "d3": "^4.8.0",
+    "d3-tip": "^0.7.1",
+    "moment": "^2.18.1",
+    "node-fetch": "^1.6.3",
+    "react": "^15.5.4",
+    "react-datepicker": "^0.46.0",
+    "react-dom": "^15.5.4",
+    "react-jsx": "^1.0.0",
+    "react-tabs": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
