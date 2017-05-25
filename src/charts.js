@@ -72,16 +72,94 @@ class Charts
     });
   }
 
+  static Spiner(contenerId)
+  {
+    const svg = d3.select(contenerId);
+
+    const wheel = d3.component('g')
+  .create((selection) =>
+{
+    const minRadius = 4;
+    const maxRadius = 10;
+    const numDots = 10;
+    const wheelRadius = 40;
+    const rotation = 0;
+    const rotationIncrement = 3;
+
+    const radius = d3.scaleLinear()
+    .domain([0, numDots - 1])
+    .range([maxRadius, minRadius]);
+
+    const angle = d3.scaleLinear()
+    .domain([0, numDots])
+    .range([0, Math.PI * 2]);
+
+    selection
+      .selectAll('circle').data(d3.range(numDots))
+      .enter().append('circle')
+        .attr('cx', d => Math.sin(angle(d)) * wheelRadius)
+        .attr('cy', d => Math.cos(angle(d)) * wheelRadius)
+        .attr('r', radius);
+  })
+  .render((selection, d) =>
+{
+    selection.attr('transform', `rotate(${d})`);
+  });
+
+    const spinner = ((() =>
+{
+      const timer = d3.local();
+      return d3.component('g')
+    .create((selection, d) =>
+{
+      timer.set(selection.node(), d3.timer((elapsed) =>
+{
+        selection.call(wheel, elapsed * d.speed);
+      }));
+    })
+    .render((selection, d) =>
+{
+      selection.attr('transform', `translate(${d.x},${d.y})`);
+    })
+    .destroy((selection, d) =>
+{
+      timer.get(selection.node()).stop();
+      return selection
+        .attr('fill-opacity', 1)
+        .transition().duration(3000)
+          .attr('transform', `translate(${d.x},${d.y}) scale(10)`)
+          .attr('fill-opacity', 0);
+    });
+    })());
+
+    const app = d3.component('g')
+  .render((selection, d) =>
+{
+    selection
+      .call(spinner, {
+        x: d.width / 2,
+        y: d.height / 2,
+        speed: 0.2,
+      });
+  });
+
+    const width = 960;
+    const height = 500;
+
+    svg.call(app, {
+      width,
+      height,
+      loading: true,
+    });
+  }
+
+
   static LineChart(dane, contenerId)
   {
     const svg = d3.select(contenerId);
     // podpinanie i tworzenie nowego elementu svg do wybranego kontenera
     // const svg = d3.select(contener).append('svg').attr('width', 960).attr('height', 500);
-
-    // usuwanie poprzednich wykresow, nie wiem czy wszstkie selecty potrzebne
-    svg.selectAll('.domain').remove();
-    svg.selectAll('g').remove();
-    svg.selectAll('path').remove();
+    svg.select('*').remove();
 
     const margin = { top: 20, right: 20, bottom: 30, left: 50 };
     const width = +svg.attr('width') - margin.left - margin.right;
@@ -143,7 +221,6 @@ class Charts
         .attr('stroke-with', 0.5)
         .attr('stroke', 'black')
         .attr('fill', 'green')
-        .attr('transition', 'stroke-width 250ms linear')
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
   }

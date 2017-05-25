@@ -63,6 +63,9 @@ circle:hover{
   stroke-opacity: .5;
 }
 
+circle{
+  transition: stroke-width 250ms linear;
+}
 
 .axis--x path {
   display: none;

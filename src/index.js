@@ -33,10 +33,10 @@ class Main extends React.Component
       Charts.LineChart(wynik, '#area1');
       Charts.LineChart(wynik, '#area3');
       Charts.LineChart(wynik, '#area4');
-      Charts.LineChart(wynik, '#area5');
+      // Charts.LineChart(wynik, '#area5');
     });
 
-
+    Charts.Spiner('#area5');
     Charts.BarChart('#area2');
   }
 
