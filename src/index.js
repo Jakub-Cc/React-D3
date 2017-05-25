@@ -36,8 +36,8 @@ class Main extends React.Component
       // Charts.LineChart(wynik, '#area5');
     });
 
-    Charts.Spiner('#area5');
     Charts.BarChart('#area2');
+    Charts.Spiner('#area5');
   }
 
   startDateHandleChange(date)
