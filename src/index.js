@@ -32,11 +32,11 @@ class Main extends React.Component
     {
       Charts.LineChart(wynik, '#area1');
       Charts.LineChart(wynik, '#area3');
-      Charts.LineChart(wynik, '#area4');
       // Charts.LineChart(wynik, '#area5');
     });
 
     Charts.BarChart('#area2');
+    Charts.BubleChart({ data: 'nic' }, '#area4');
     Charts.Spiner('#area5');
   }
 
@@ -110,7 +110,7 @@ class Main extends React.Component
               Tu bedzie wykres nr 3
           </TabPanel>
           <TabPanel>
-            <svg id="area4" ref={(d) => { this.svg = d; }} width="960" height="500" />
+            <svg id="area4" ref={(d) => { this.svg = d; }} width={window.innerWidth} height="1000" textAnchor="middle" />
             <br />
               Tu bedzie wykres nr 4
           </TabPanel>
