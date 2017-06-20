@@ -2,6 +2,9 @@ import * as d3 from 'd3';
 import moment from 'moment';
 import d3tip from 'd3-tip';
 
+// konsultacje
+// wtorek 11
+// c3 117
 class Charts
 {
   static BarChart(contenerId)
@@ -72,19 +75,17 @@ class Charts
     });
   }
 
-  static Spiner(contenerId)
+  static SpinerShow(contenerId)
   {
     const svg = d3.select(contenerId);
-
-    const wheel = d3.component('g')
-  .create((selection) =>
-{
+    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    const width = +svg.attr('width') - margin.left - margin.right;
+    const height = +svg.attr('height') - margin.top - margin.bottom;
+    const spiner = svg.append('g').attr('transform', `translate(${width / 2},${height / 2})`);
     const minRadius = 4;
     const maxRadius = 10;
     const numDots = 10;
     const wheelRadius = 40;
-    // const rotation = 0;
-    // const rotationIncrement = 3;
 
     const radius = d3.scaleLinear()
     .domain([0, numDots - 1])
@@ -94,63 +95,56 @@ class Charts
     .domain([0, numDots])
     .range([0, Math.PI * 2]);
 
-    selection
-      .selectAll('circle').data(d3.range(numDots))
-      .enter().append('circle')
-        .attr('cx', d => Math.sin(angle(d)) * wheelRadius)
-        .attr('cy', d => Math.cos(angle(d)) * wheelRadius)
-        .attr('r', radius);
-  })
-  .render((selection, d) =>
-{
-    selection.attr('transform', `rotate(${d})`);
-  });
+/*
+    function rotTween()
+    {
+      const i = d3.interpolate(0, 720);
+      return t => `rotate(${i(t)})`;
+    }*/
 
-    const spinner = ((() =>
-{
-      const timer = d3.local();
-      return d3.component('g')
-    .create((selection, d) =>
-{
-      timer.set(selection.node(), d3.timer((elapsed) =>
-{
-        selection.call(wheel, elapsed * d.speed);
-      }));
-    })
-    .render((selection, d) =>
-{
-      selection.attr('transform', `translate(${d.x},${d.y})`);
-    })
-    .destroy((selection, d) =>
-{
-      timer.get(selection.node()).stop();
-      return selection
-        .attr('fill-opacity', 1)
-        .transition().duration(3000)
-          .attr('transform', `translate(${d.x},${d.y}) scale(10)`)
-          .attr('fill-opacity', 0);
+    spiner
+    .attr('id', 'spiner')
+    .selectAll('circle').data(d3.range(numDots))
+    .enter()
+    .append('circle')
+    .attr('cx', d => Math.sin(angle(d)) * wheelRadius)
+    .attr('cy', d => Math.cos(angle(d)) * wheelRadius)
+    .attr('r', radius);
+    /* .transition()
+    /.on('start', function repeat()
+    {
+      d3.active(this)
+          .attrTween('transform', rotTween)
+          .duration(12000)
+          .transition()
+          .on('start', repeat);
+    });*/
+
+    const t0 = Date.now();
+    const speed = 30;
+    d3.timer(() =>
+    {
+      const delta = (Date.now() - t0);
+      spiner
+      .attr('transform', `translate(${width / 2},${height / 2}) rotate(${(delta * speed) / 200})`);
     });
-    })());
+  }
 
-    const app = d3.component('g')
-  .render((selection, d) =>
-{
-    selection
-      .call(spinner, {
-        x: d.width / 2,
-        y: d.height / 2,
-        speed: 0.2,
-      });
-  });
+  static SpinerFade(contenerId, delay)
+  {
+    const svg = d3.select(contenerId);
+    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    const width = +svg.attr('width') - margin.left - margin.right;
+    const height = +svg.attr('height') - margin.top - margin.bottom;
 
-    const width = 960;
-    const height = 500;
-
-    svg.call(app, {
-      width,
-      height,
-      loading: true,
-    });
+    svg.select('#spiner')
+    .attr('fill-opacity', 1)
+    .transition()
+    .duration(3000)
+    .delay(delay)
+    .attr('transform', `translate(${width / 2},${height / 2}) scale(10)`)
+    .attr('fill-opacity', 0)
+    .remove();
   }
 
   static BubleChart(dane, contenerId)
@@ -169,10 +163,12 @@ class Charts
     .size([width, height])
     .padding(1.5);
 
+    let id;
     d3.csv('flare.csv', (d) =>
     {
       d.value = +d.value;
       if (d.value) return d;
+      return null;
     }, (error, classes) =>
     {
       if (error) throw error;
@@ -182,8 +178,7 @@ class Charts
       {
         if (id = d.data.id)
         {
-          var id,
-            i = id.lastIndexOf('.');
+          const i = id.lastIndexOf('.');
           d.id = id;
           d.package = id.slice(0, i);
           d.class = id.slice(i + 1);
@@ -201,6 +196,7 @@ class Charts
       .attr('r', d => d.r)
       .style('fill', d => color(d.package));
 
+      // clipPath sluzy do wyswietlania tylko elementow wspolnych nachodzacych sie elementow
       node.append('clipPath')
       .attr('id', d => `clip-${d.id}`)
       .append('use')
@@ -213,7 +209,7 @@ class Charts
       .enter()
       .append('tspan')
       .attr('x', 0)
-      .attr('y', (d, i, nodes) => 13 + (i - nodes.length / 2 - 0.5) * 10)
+      .attr('y', (d, i, nodes) => 13 + ((i - (nodes.length / 2) - 0.5) * 10))
       .attr('font-size', '10px')
       .text(d => d);
 
@@ -222,17 +218,55 @@ class Charts
     });
   }
 
+  static helperSi(contenerId)
+  {
+    const svg = d3.select(contenerId);
+    const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    // const width = +svg.attr('width') - margin.left - margin.right;
+    // const height = +svg.attr('height') - margin.top - margin.bottom;
+    const g = svg.append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`)
+    .attr('id', 'img');
+
+    const color = d3.scaleOrdinal(d3.schemeCategory20c);
+
+    g.append('svg:image')
+      .attr('xlink:href', 'img6.png');
+
+    d3.tsv(`${process.env.PUBLIC_URL}/punkty.tsv`,
+    d => ({ x1: d.x1, y1: d.y1, x2: d.x2, y2: parseInt(d.y2) + 338 }
+      ),
+    (error, dane) =>
+    {
+      const data = dane.slice();
+      // console.log(dane);
+      // console.log(data);
+      data.forEach(element => (
+        g
+        .append('line')
+        .style('stroke', color(element.x1))
+        .attr('x1', element.x1)
+        .attr('y1', element.y1)
+        .attr('x2', element.x2)
+        .attr('y2', element.y2)
+      ),
+      );
+    });
+  }
+
   static LineChart(dane, contenerId)
   {
     const svg = d3.select(contenerId);
     // podpinanie i tworzenie nowego elementu svg do wybranego kontenera
     // const svg = d3.select(contener).append('svg').attr('width', 960).attr('height', 500);
-    svg.select('*').remove();
+    svg.select('#graph').remove();
 
     const margin = { top: 20, right: 20, bottom: 30, left: 50 };
     const width = +svg.attr('width') - margin.left - margin.right;
     const height = +svg.attr('height') - margin.top - margin.bottom;
-    const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+    const g = svg.append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`)
+    .attr('id', 'graph');
 
     const data = dane.slice();
     const x = d3.scaleTime().rangeRound([0, width]);
@@ -283,6 +317,7 @@ class Charts
         .data(data)
         .enter()
         .append('circle')
+        .attr('class', 'tipCircle')
         .attr('r', 2)
         .attr('cx', d => x(d.date))
         .attr('cy', d => y(d.close))

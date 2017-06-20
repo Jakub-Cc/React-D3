@@ -27,17 +27,30 @@ class Main extends React.Component
 
   componentDidMount()
   {
-    downloadData.downloadFromBitCoinApi()
-    .then((wynik) =>
+    Charts.helperSi('#area4');
+    try
     {
-      Charts.LineChart(wynik, '#area1');
-      Charts.LineChart(wynik, '#area3');
-      // Charts.LineChart(wynik, '#area5');
-    });
+      Charts.SpinerShow('#area1');
+      downloadData.downloadFromBitCoinApi()
+      .then((wynik) =>
+      {
+        Charts.LineChart(wynik, '#area1');
+       // Charts.LineChart(wynik, '#area3');
+        // Charts.LineChart(wynik, '#area5');
+        Charts.SpinerFade('#area1', 0);
+      })
+      .catch((e) => { console.log(`wywalilo sie ${e}`); Charts.SpinerFade('#area1', 0); });
+    }
+    catch (err)
+    {
+      console.log('kupa');
+      console.log(err);
+    }
 
     Charts.BarChart('#area2');
-    Charts.BubleChart({ data: 'nic' }, '#area4');
-    Charts.Spiner('#area5');
+    Charts.BubleChart({ data: 'nic' }, '#area3');
+    Charts.SpinerShow('#area5');
+    Charts.SpinerFade('#area5', 12000);
   }
 
   startDateHandleChange(date)
@@ -52,8 +65,10 @@ class Main extends React.Component
 
   downloadClick()
  {
+    Charts.SpinerShow('#area1');
     downloadData.downloadFromBitCoinApi(this.state.startDate.format('YYYY-MM-DD'), this.state.endDate.format('YYYY-MM-DD'))
-    .then((wynik) => { Charts.LineChart(wynik, 'svg'); });
+    .then((wynik) => { Charts.LineChart(wynik, '#area1'); Charts.SpinerFade('#area1', 0); })
+    .catch((e) => { console.log(`klik i wywalilo ${e}`); Charts.SpinerFade('#area1', 0); });
   }
 
   render()
@@ -105,12 +120,17 @@ class Main extends React.Component
                  później wykres rozkładu długości wiadomości na twitterze.
           </TabPanel>
           <TabPanel>
-            <svg id="area3" ref={(d) => { this.svg = d; }} width="960" height="500" />
+            <svg
+              id="area3" ref={(d) => { this.svg = d; }} width={window.innerWidth}
+              height="1000" textAnchor="middle"
+            />
             <br />
-              Tu bedzie wykres nr 3
+              Chwilowo wykres bąbelkowy hierarchi klasy flare (http://flare.prefuse.org/).
           </TabPanel>
           <TabPanel>
-            <svg id="area4" ref={(d) => { this.svg = d; }} width={window.innerWidth} height="1000" textAnchor="middle" />
+            <svg
+              id="area4" ref={(d) => { this.svg = d; }} width="960" height="750"
+            />
             <br />
               Tu bedzie wykres nr 4
           </TabPanel>
