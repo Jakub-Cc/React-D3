@@ -43,7 +43,7 @@ class Main extends React.Component
     }
     catch (err)
     {
-      console.log('kupa');
+      console.log('err');
       console.log(err);
     }
 
@@ -133,6 +133,7 @@ class Main extends React.Component
             />
             <br />
               Tu bedzie wykres nr 4
+              Grafiki pomocnicze, do projektu rozpoznawania obrazow, na przedmiot SI
           </TabPanel>
           <TabPanel>
             <svg id="area5" ref={(d) => { this.svg = d; }} width="960" height="500" />
