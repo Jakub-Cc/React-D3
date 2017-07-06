@@ -231,11 +231,13 @@ class Charts
     const color = d3.scaleOrdinal(d3.schemeCategory20c);
 
     g.append('svg:image')
-      .attr('xlink:href', 'img6.png');
+      .attr('xlink:href', 'img7.png');
 
     d3.tsv(`${process.env.PUBLIC_URL}/punkty.tsv`,
-    d => ({ x1: d.x1, y1: d.y1, x2: d.x2, y2: parseInt(d.y2) + 338 }
-      ),
+    d => ({ x1: parseInt(d.x1, 10),
+      y1: parseInt(d.y1, 10),
+      x2: parseInt(d.x2, 10) + 600,
+      y2: parseInt(d.y2, 10) }),
     (error, dane) =>
     {
       const data = dane.slice();

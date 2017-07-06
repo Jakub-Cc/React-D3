@@ -27,19 +27,19 @@ class Main extends React.Component
 
   componentDidMount()
   {
-    Charts.helperSi('#area4');
+    Charts.helperSi('#area1');
     try
     {
-      Charts.SpinerShow('#area1');
+      Charts.SpinerShow('#area4');
       downloadData.downloadFromBitCoinApi()
       .then((wynik) =>
       {
-        Charts.LineChart(wynik, '#area1');
+        Charts.LineChart(wynik, '#area4');
        // Charts.LineChart(wynik, '#area3');
         // Charts.LineChart(wynik, '#area5');
-        Charts.SpinerFade('#area1', 0);
+        Charts.SpinerFade('#area4', 0);
       })
-      .catch((e) => { console.log(`wywalilo sie ${e}`); Charts.SpinerFade('#area1', 0); });
+      .catch((e) => { console.log(`wywalilo sie ${e}`); Charts.SpinerFade('#area4', 0); });
     }
     catch (err)
     {
@@ -84,7 +84,7 @@ class Main extends React.Component
             <Tab>Wykres 5</Tab>
           </TabList>
           <TabPanel>
-            <svg id="area1" ref={(c) => { this.svg = c; }} width="960" height="500" />
+            <svg id="area1" ref={(c) => { this.svg = c; }} width="1200" height="750" />
             <br />
             <DatePicker
               className="form-control"
