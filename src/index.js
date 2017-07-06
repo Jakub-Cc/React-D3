@@ -27,19 +27,19 @@ class Main extends React.Component
 
   componentDidMount()
   {
-    Charts.helperSi('#area1');
+    Charts.helperSi('#area4');
     try
     {
-      Charts.SpinerShow('#area4');
+      Charts.SpinerShow('#area1');
       downloadData.downloadFromBitCoinApi()
       .then((wynik) =>
       {
-        Charts.LineChart(wynik, '#area4');
+        Charts.LineChart(wynik, '#area1');
        // Charts.LineChart(wynik, '#area3');
         // Charts.LineChart(wynik, '#area5');
-        Charts.SpinerFade('#area4', 0);
+        Charts.SpinerFade('#area1', 0);
       })
-      .catch((e) => { console.log(`wywalilo sie ${e}`); Charts.SpinerFade('#area4', 0); });
+      .catch((e) => { console.log(`wywalilo sie ${e}`); Charts.SpinerFade('#area1', 0); });
     }
     catch (err)
     {
@@ -84,7 +84,7 @@ class Main extends React.Component
             <Tab>Wykres 5</Tab>
           </TabList>
           <TabPanel>
-            <svg id="area1" ref={(c) => { this.svg = c; }} width="1200" height="750" />
+            <svg id="area1" ref={(c) => { this.svg = c; }} width="960" height="500" />
             <br />
             <DatePicker
               className="form-control"
@@ -129,16 +129,19 @@ class Main extends React.Component
           </TabPanel>
           <TabPanel>
             <svg
-              id="area4" ref={(d) => { this.svg = d; }} width="960" height="750"
+              id="area4" ref={(d) => { this.svg = d; }} width="1300" height="500"
             />
             <br />
-              Tu bedzie wykres nr 4
-              Grafiki pomocnicze, do projektu rozpoznawania obrazow, na przedmiot SI
+              Tu bedzie wykres nr 4, tego samego typu co wykres nr 3, tylko inne dane
+            <br />
+              Chwilowo grafiki pomocnicze, do projektu rozpoznawania obrazow, na przedmiot SI
           </TabPanel>
           <TabPanel>
             <svg id="area5" ref={(d) => { this.svg = d; }} width="960" height="500" />
             <br />
-              Tu bedzie wykres nr 5
+              Tu bedzie wykres nr 5, tego samego typu co wykres nr 3, tylko inne dane
+            <br />
+              Chwilowo test spinera ladowania z okreslonym czasem trwania.
           </TabPanel>
         </Tabs>
       </div>
