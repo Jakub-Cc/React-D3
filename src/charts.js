@@ -231,9 +231,9 @@ class Charts
     const color = d3.scaleOrdinal(d3.schemeCategory20c);
 
     g.append('svg:image')
-      .attr('xlink:href', 'img7.png');
+      .attr('xlink:href', 'data si/img7.png');
 
-    d3.tsv(`${process.env.PUBLIC_URL}/punkty.tsv`,
+    d3.tsv(`${process.env.PUBLIC_URL}/data si/punkty.tsv`,
     d => ({ x1: parseInt(d.x1, 10),
       y1: parseInt(d.y1, 10),
       x2: parseInt(d.x2, 10) + 600,
