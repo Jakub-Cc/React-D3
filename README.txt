@@ -1,3 +1,5 @@
-Moja pierwsza strona z wykorzystaniem react oraz d3 na potrzeby projektu z technologii webowej.
+Strona z wykorzystaniem React oraz D3 na potrzeby projektu z przedmiotu "Zaawansowane Technologie Webowe".
 
-Celem projektu jest stworzenie strony (front-end), gdzie wyświetlane zostaną wykresy/grafy, docelowo danych pobranych z twittera, finalnie przez brak współpracy partnera z projektu (back-end), wyświetlane są różne dane. 
+Celem projektu było stworzenie strony, gdzie wyświetlane zostaną wykresy/grafy, danych pobieranych z twittera.
+Zakresem moich obowiązków było utworzenie front-end dla projektu, pobieranie z api danych, oraz ich prezentacje na stronie. 
+Finalnie przez brak współpracy partnera z projektu (back-end), wyświetlane są wykresy/grafy innych danych. 
