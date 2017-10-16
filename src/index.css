@@ -3,6 +3,10 @@ body {
   margin: 20px;
 }
 
+.graph-svg-component {
+    background-color: AliceBlue;
+}
+
 ol, ul {
   padding-left: 30px;
 }
